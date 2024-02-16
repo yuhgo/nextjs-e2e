@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+} */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .hamburger-button {
+    @apply relative h-12 w-12 cursor-pointer bg-white;
+  }
+  .hamburger-button span {
+    @apply absolute left-3 inline-block h-0.5 bg-gray-600 transition-all duration-300 ease-in-out;
+  }
+  .hamburger-button span:nth-of-type(1) {
+    @apply top-[22px] w-1/2;
+  }
+  .hamburger-button span:nth-of-type(2) {
+    @apply top-[29px] w-3/4;
+  }
+  .hamburger-button.active span:nth-of-type(1) {
+    @apply left-4 top-5 w-7/12 translate-y-1.5 -rotate-45;
+  }
+  .hamburger-button.active span:nth-of-type(2) {
+    @apply left-4 top-8 w-7/12 -translate-y-1.5 rotate-45;
+  }
+}

@@ -52,6 +52,7 @@
 				"not-found.tsx",
 				"page.tsx",
 				"route.ts",
+				"head.tsx",
 				"template.tsx",
 				".storybook",
 				"*.stories.*",

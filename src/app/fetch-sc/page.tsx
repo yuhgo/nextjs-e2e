@@ -1,9 +1,9 @@
+import { API_URL } from "@/_lib/const";
 import type { Note } from "@prisma/client";
 import { cookies } from "next/headers";
 
 const fetchNotes = async (token: string | undefined) => {
-	const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api/notes` : `${process.env.API_URL}/notes`;
-
+	const url = `${API_URL}/notes`;
 	const res = await fetch(url, {
 		headers: {
 			cookie: `next-auth.session-token=${token}`,

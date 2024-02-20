@@ -1,4 +1,5 @@
 "use client";
+import { CLIENT_API_URL } from "@/_lib/const";
 import type { Note } from "@prisma/client";
 
 import { useEffect, useState } from "react";
@@ -8,7 +9,8 @@ export default function FetchCcPage() {
 
 	useEffect(() => {
 		const fetchNotes = async () => {
-			const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/notes`);
+			const url = `${CLIENT_API_URL}/notes`;
+			const res = await fetch(url);
 			if (res.status === 200) {
 				setNotes(await res.json());
 			}

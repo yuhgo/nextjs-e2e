@@ -1,5 +1,7 @@
 import { nextAuthOptions } from "@/_lib/nextAuth/options";
 import { createTask, getTasks } from "@/_lib/prisma/tasks";
+import { getObjectFromRequestBodyStream } from "@/app/api/_lib/requestDecoder";
+import type { Task } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { createTaskSchema } from "schema/task";
@@ -36,7 +38,10 @@ export const POST = async (req: Request, _res: Response) => {
 		});
 	}
 
-	const validationRes = createTaskSchema.safeParse(req.body);
+	const reqBody = await getObjectFromRequestBodyStream<Task>(req.body);
+
+	const validationRes = createTaskSchema.safeParse(reqBody);
+
 	if (!validationRes.success) {
 		return new Response("Invalid input data", {
 			status: 400,

@@ -1,4 +1,4 @@
-import { createStore } from "zustand";
+import { create } from "zustand";
 
 import type { Task } from "@prisma/client";
 
@@ -10,7 +10,7 @@ type State = {
 	resetEditedTask: () => void;
 };
 
-export const useStore = createStore<State>((set) => ({
+export const useStore = create<State>((set) => ({
 	editedTask: {
 		id: "",
 		title: "",

@@ -1,5 +1,6 @@
 import { nextAuthOptions } from "@/_lib/nextAuth/options";
 import { deleteTask, getTaskById, updateTask } from "@/_lib/prisma/tasks";
+import { getObjectFromRequestBodyStream } from "@/app/api/_lib/requestDecoder";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { taskIdSchema, updateTaskSchema } from "schema/task";
@@ -10,7 +11,7 @@ type Params = {
 	};
 };
 
-export const GET = async (_req: Request, _res: Response, { params }: Params) => {
+export const GET = async (_req: Request, { params }: Params) => {
 	const session = await getServerSession(nextAuthOptions);
 
 	if (!session) {
@@ -19,7 +20,7 @@ export const GET = async (_req: Request, _res: Response, { params }: Params) => 
 		});
 	}
 
-	const validationRes = taskIdSchema.safeParse(params.taskId);
+	const validationRes = taskIdSchema.safeParse(params);
 	if (!validationRes.success) {
 		return new Response("Invalid input data", {
 			status: 400,
@@ -40,7 +41,7 @@ export const GET = async (_req: Request, _res: Response, { params }: Params) => 
 	}
 };
 
-export const DELETE = async (_req: Request, _res: Response, { params }: Params) => {
+export const DELETE = async (_req: Request, { params }: Params) => {
 	const session = await getServerSession(nextAuthOptions);
 
 	if (!session) {
@@ -49,7 +50,8 @@ export const DELETE = async (_req: Request, _res: Response, { params }: Params) 
 		});
 	}
 
-	const validationRes = taskIdSchema.safeParse(params.taskId);
+	const validationRes = taskIdSchema.safeParse(params);
+
 	if (!validationRes.success) {
 		return new Response("Invalid input data", {
 			status: 400,
@@ -70,7 +72,7 @@ export const DELETE = async (_req: Request, _res: Response, { params }: Params) 
 	}
 };
 
-export const PUT = async (req: Request, _res: Response, { params }: Params) => {
+export const PUT = async (req: Request, { params }: Params) => {
 	const session = await getServerSession(nextAuthOptions);
 
 	if (!session) {
@@ -79,8 +81,10 @@ export const PUT = async (req: Request, _res: Response, { params }: Params) => {
 		});
 	}
 
-	const paramsValidationRes = taskIdSchema.safeParse(params.taskId);
-	const updateValidationRes = updateTaskSchema.safeParse(req.body);
+	const reqBody = await getObjectFromRequestBodyStream<{ completed: boolean }>(req.body);
+
+	const paramsValidationRes = taskIdSchema.safeParse(params);
+	const updateValidationRes = updateTaskSchema.safeParse(reqBody);
 	if (!(paramsValidationRes.success && updateValidationRes.success)) {
 		return new Response("Invalid input data", {
 			status: 400,

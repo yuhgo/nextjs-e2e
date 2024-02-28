@@ -21,7 +21,7 @@ const fetchTasks = async (token?: string) => {
 export const TaskList = async () => {
 	const nextCookies = cookies();
 	const token = nextCookies.get("next-auth.session-token");
-	const tasks = token ? await fetchTasks(token.value) : [];
+	const tasks = await fetchTasks(token?.value);
 
 	return (
 		<ul className="mx-3 my-6">
